@@ -1,0 +1,72 @@
+@import './index.scss';
+
+$colorPrimary: #1890ff;
+$colorPrimaryLight: #6eaae2;
+$colorDangerLight:#e57373 ;
+$colorDanger: #f44336 ;
+$colorDangerDard: #d32f2f;
+$colorWhite: #fff;
+$colorLightGray: #dbdbdb;
+$ColorGray: #968d8d;
+$colorDarkGray: #585555;
+$colorSuccess: #66BB6A;
+$colorSuccessLight: #A5D6A7;
+$colorSuccessDark: #43A047;
+
+@mixin flexBetweenCenter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@mixin flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin flexAroundCenter {
+    display: flex;
+    justify-content: space-around;
+    align-items: center
+}
+
+
+@mixin respond($breakpoint) {
+    @if $breakpoint == xs {
+      @media only screen and (max-width: 550px) {
+        @content;
+      }
+    }
+    @if $breakpoint == sm {
+      @media only screen and (max-width: 768px) {
+        @content;
+      }
+    }
+    @if $breakpoint == md {
+      @media only screen and (max-width: 1024px) {
+        @content;
+      }
+    }
+    @if $breakpoint == lg {
+      @media only screen and (max-width: 1440px) {
+        @content;
+      }
+    }
+    @if $breakpoint == lgm {
+      @media only screen and (max-width: 1600px) {
+        @content;
+      }
+    }
+    @if $breakpoint == xl {
+      @media only screen and (max-width: 1920px) {
+        @content;
+      }
+    }
+    @if $breakpoint == xxl {
+      @media only screen and (min-width: 1921px) {
+        @content;
+      }
+    }
+  }
+  

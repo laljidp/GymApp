@@ -1,0 +1,25 @@
+@import '../../../sass/resources.scss';
+
+.Button {
+    background-color: #dbdbdb;
+    border-radius: 5px;
+    border: 1px solid #dbdbdb;
+    font-family: Lato;
+    button {
+        border: none;
+        padding: 5px 10px;        
+        background: transparent;
+        font-size: 14px;
+        font-weight: bold
+        &:focus {
+            border: 1px solid #0d7fe8
+        }
+        &:hover {
+            border: 1px solid #0d7fe8
+        }
+    }
+    &__primary {
+       background-color: $colorPrimary;
+       color: $colorWhite
+    }
+}
