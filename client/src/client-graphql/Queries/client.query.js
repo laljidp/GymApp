@@ -14,7 +14,27 @@ export const fetchClients =
             exercise
             createdAt
             updatedAt
+            isSpecialTraining
             createdBy
             updatedBy
         }
     }`
+
+export const createClient = gql`
+mutation client($client: clientData) {
+  createClient(input: $client){
+    id
+    name
+    dob
+    fees
+    isSpecialTraining
+    joining_date
+    mobile_no
+    exercise
+    trainer {
+      id
+      name
+    }
+  }
+}
+`

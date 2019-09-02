@@ -1,14 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import moment from 'moment'
+import { Button } from 'antd'
 import styles from '../styles.module.scss'
 
 function Card (props) {
   const {
-    createdBy, dob, ending_date, exercise, fees, id,
+    createdBy, dob, exercise, fees, id,
     joining_date, mobile_no, name, updatedAt, updatedBy
   } = props.data
+
+  const [cardInfoModal, toggleModal] = useState(false)
+
+  const openCardInfo = (id) => {
+    toggleModal(!cardInfoModal)
+    console.log(id)
+  }
   return (
-    <div className={styles.Cards}>
+    <div className={styles.Cards} onClick={() => openCardInfo(id)}>
       <div className={styles.Cards__header} >
         {name}
       </div>
@@ -24,6 +32,14 @@ function Card (props) {
         </div>
         <div className={styles.Cards__mobileNo}>
             MOB: {mobile_no}
+        </div>
+      </div>
+      <div className={styles.Cards__Bottom}>
+        <div className={styles.Cards_Botton__edit}>
+          Edit
+        </div>
+        <div className={styles.Cards__Botton_delete}>
+          Delete
         </div>
       </div>
     </div>

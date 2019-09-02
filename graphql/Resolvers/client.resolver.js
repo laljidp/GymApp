@@ -16,6 +16,7 @@ export default {
         exercise: yup.string().required('exercise required')
       }),
       resolve: async (parent, { input }, { Clients, user }, info) => {
+        debugger
         const row = new Clients({ ...input, createdBy: user.name, updatedBy: user.name })
         const client = await row.save()
         if (!client) {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Layout, Menu, Icon } from 'antd'
 import { withRouter } from 'react-router'
-import './navbar.scss'
+import styles from './styles.module.scss'
 
 const { Header, Sider, Content } = Layout
 
@@ -46,12 +46,8 @@ function NavBar (props) {
         </Menu>
       </Sider>
       <Layout>
-        <Header style={{
-          display: 'flex',
-          alignItems: 'center',
-          background: '#fff',
-          padding: 0,
-          height: '50px' }}
+        <Header
+          className={styles.NavHeader}
         >
           <Icon
             className='trigger'
@@ -60,14 +56,7 @@ function NavBar (props) {
             onClick={toggle}
           />
         </Header>
-        <Content
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            background: '#fff',
-            minHeight: 280
-          }}
-        >
+        <Content className={styles.Main}>
           {props.children}
         </Content>
       </Layout>

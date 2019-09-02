@@ -7,6 +7,7 @@
     "start": "nodemon --exec babel-node -- index.js",
     "dev": "concurrently \"yarn start\" \"cd client && yarn start\"",
     "debug": "nodemon --inspect --exec babel-node -- index.js",
+    "debug-dev": "concurrently \"yarn debug\" \"cd client && yarn start\" ",
     "fix": "standard --fix",
     "build": "cd client && yarn build"
   },

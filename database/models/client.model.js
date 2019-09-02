@@ -23,6 +23,11 @@ export const Clients = mongoose.model('client', {
   ending_date: {
     type: Date
   },
+  isSpecialTraining: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   fee: {
     type: Number,
     required: true

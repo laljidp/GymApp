@@ -6,7 +6,8 @@ import styles from '../styles.module.scss'
 const { Option } = Select
 
 function ClientModal ({ onChange, form, ...rest }) {
-  const { name, joiningDate, exercise, isSpecialTraining } = form
+  const { name, joiningDate, exercise, isSpecialTraining = false, dob, mobile_no: mobileNo } = form
+  const { fee = 500 } = form
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState(null)
 
@@ -64,9 +65,23 @@ function ClientModal ({ onChange, form, ...rest }) {
           </Select>
         </div>
         <div className={styles.ClientModalForm__row}>
+          <Input
+            placeholder='mobile no'
+            name='mobile_no'
+            type='text'
+            value={mobileNo}
+            onChange={onChange}
+          />
+        </div>
+        <div className={styles.ClientModalForm__row}>
           <label>Joining date </label>
           <DatePicker value={joiningDate} onChange={(date => onChange({ target: { name: 'joiningDate', value: date } }))} />
         </div>
+        <div className={styles.ClientModalForm__row}>
+          <label>Date of Birth </label>
+          <DatePicker value={dob} onChange={(date => onChange({ target: { name: 'dob', value: date } }))} />
+        </div>
+
         <div className={styles.ClientModalForm__row}>
           <label> Photo </label>
           <Upload
@@ -88,6 +103,17 @@ function ClientModal ({ onChange, form, ...rest }) {
             value={isSpecialTraining}
           />
           <label>Special Training?</label>
+        </div>
+        <div className={styles.ClientModalForm__row}>
+          <label> Monthly fee </label>
+          <Input
+            placeholder='fee'
+            name='fee'
+            type='text'
+            disabled
+            value={fee}
+            onChange={onChange}
+          />
         </div>
       </div>
     </MyModal>

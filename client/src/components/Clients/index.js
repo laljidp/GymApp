@@ -1,15 +1,39 @@
 import React, { useState } from 'react'
+import moment from 'moment'
 import { graphql } from 'react-apollo'
+import { useMutation } from '@apollo/react-hooks'
 import { Button } from 'antd'
 import Input from '../../components/UI/Input'
 import ClientModal from './Layouts/ClientModal'
 import ClientCards from './Layouts/ClientCards'
-import { fetchClients } from '../../client-graphql/Queries/client.query'
+import { fetchClients, createClient } from '../../client-graphql/Queries/client.query'
 import styles from './styles.module.scss'
 
 function Clients ({ data, ...rest }) {
   const [visible, setVisible] = useState(false)
-  const [form, setForm] = useState({})
+  const [form, setForm] = useState({ fee: 500 })
+  const [addClient, { loading: mutationLoading, error: mutationError }] = useMutation(createClient, {
+    update (cache, { data: { createClient: client } }) {
+      debugger
+      const data = cache.readQuery({
+        query: fetchClients,
+        variables: {
+          limit: 100, skip: 0
+        }
+      })
+      debugger
+      console.log('clients', clients)
+      console.log('client', client)
+      cache.writeQuery({
+        query: fetchClients,
+        data: { clients: data.clients.push(client) }
+      })
+      setVisible(false)
+    }
+  })
+
+  console.log('mutationError', mutationError)
+  console.log('mutationLoading', mutationLoading)
 
   const ToggleModal = () => {
     setVisible(!visible)
@@ -17,14 +41,49 @@ function Clients ({ data, ...rest }) {
 
   const onChange = (e) => {
     const { name, value } = e.target
-    setForm({
-      ...form,
-      [name]: value
-    })
+
+    if (name === 'isSpecialTraining' && value === true) {
+      setForm({
+        ...form,
+        fee: form.fee + 200,
+        [name]: value
+      })
+    } else if (name === 'isSpecialTraining' && value === false) {
+      setForm({
+        ...form,
+        fee: 500,
+        [name]: value
+      })
+    } else {
+      setForm({
+        ...form,
+        [name]: value
+      })
+    }
   }
 
   const handleSave = () => {
     console.log('save', form)
+    const { name, exercise, isSpecialTraining, joiningDate, mobile_no: mobileNo, dob } = form
+    const fee = 500 + isSpecialTraining ? 200 : 0
+    addClient({
+      variables: {
+        client: {
+          name: name,
+          dob: moment(dob).format('YYYY-MM-DD'),
+          fee: fee,
+          mobile_no: mobileNo,
+          joining_date: moment(joiningDate).format('YYYY-MM-DD'),
+          exercise: exercise,
+          isSpecialTraining
+        }
+      }
+    }).then((result) => {
+      console.log('result', result)
+    })
+      .catch(err => {
+        console.log('error', err)
+      })
   }
 
   const { clients, error, loading } = data
@@ -80,5 +139,5 @@ function Clients ({ data, ...rest }) {
 }
 
 export default graphql(fetchClients,
-  { options: (props) => ({ variables: { limit: props.limit || 10, skip: props.skip || 0 } }) }
+  { options: (props) => ({ variables: { limit: props.limit || 100, skip: props.skip || 0 } }) }
 )(Clients)
