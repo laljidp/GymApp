@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import moment from 'moment'
 import { graphql } from 'react-apollo'
 import { useMutation } from '@apollo/react-hooks'
-import { Button } from 'antd'
-import Input from '../../components/UI/Input'
+import { Button, Input, Icon } from 'antd'
 import ClientModal from './Layouts/ClientModal'
 import ClientCards from './Layouts/ClientCards'
 import { fetchClients, createClient } from '../../client-graphql/Queries/client.query'
@@ -14,16 +13,12 @@ function Clients ({ data, ...rest }) {
   const [form, setForm] = useState({ fee: 500 })
   const [addClient, { loading: mutationLoading, error: mutationError }] = useMutation(createClient, {
     update (cache, { data: { createClient: client } }) {
-      debugger
       const data = cache.readQuery({
         query: fetchClients,
         variables: {
           limit: 100, skip: 0
         }
       })
-      debugger
-      console.log('clients', clients)
-      console.log('client', client)
       cache.writeQuery({
         query: fetchClients,
         data: { clients: data.clients.push(client) }
@@ -72,7 +67,6 @@ function Clients ({ data, ...rest }) {
           name: name,
           dob: moment(dob).format('YYYY-MM-DD'),
           fee: fee,
-          image: image,
           mobile_no: mobileNo,
           joining_date: moment(joiningDate).format('YYYY-MM-DD'),
           exercise: exercise,
@@ -109,6 +103,7 @@ function Clients ({ data, ...rest }) {
           <Input
             name='search'
             type='text'
+            prefix={<Icon type='search' />}
             className={styles.Client__searchBox__Input}
             placeholder='Search'
             search
@@ -129,7 +124,7 @@ function Clients ({ data, ...rest }) {
         onChange={onChange}
         footer={(
           <div className={styles.btnSave}>
-            <Button type='primary' onClick={handleSave}>
+            <Button type='primary' loading={mutationLoading} onClick={handleSave}>
               Save
             </Button>
           </div>

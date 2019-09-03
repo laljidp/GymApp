@@ -35,6 +35,10 @@ function NavBar (props) {
             <Icon type='user' />
             <span>Clients</span>
           </Menu.Item>
+          <Menu.Item key='trainer'>
+            <Icon type='customer-service' />
+            <span>Trainer</span>
+          </Menu.Item>
           <Menu.Item key='attendance'>
             <Icon type='calendar' theme='filled' />
             <span>Attendance</span>

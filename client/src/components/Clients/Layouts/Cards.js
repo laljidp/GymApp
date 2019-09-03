@@ -22,7 +22,7 @@ function Card (props) {
       </div>
       <div className={styles.Cards__body}>
         <div className={styles.Cards__body__Img}>
-          <img src={image} alt='' />
+          <img src={image || 'https://i.pinimg.com/originals/ed/9b/09/ed9b09e2fbd90a159af173bf1719ea70.jpg'} alt='' />
         </div>
         <div className={styles.Cards__exercise}>
           {exercise}

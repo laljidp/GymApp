@@ -1,0 +1,51 @@
+@import '../../sass/resources.scss';
+
+.Trainer {    
+    font-family: Montserrat;
+    &__container {
+        padding: 10px;
+        &__form {
+            @include flexBetweenCenter;
+            &__search {
+                max-width: 300px;
+            }
+        }
+    }
+}
+
+.TrainerList {
+    padding: 10px 0px;
+    flex-wrap: wrap;
+    &__Card {
+        font-size: 14px;
+        border: 1px solid #dbdbdb;
+        border-radius: 10px;
+        max-width: 300px;
+        padding: 15px;
+        &__name {
+            color: $colorPrimary;
+        }
+        &__Tags {
+            padding-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            span {
+                margin: 5px
+            }
+        }
+    }
+    hr {
+        border: 1px solid #dbdbdb;
+    }
+}
+
+.TrainerModal {
+    &__form {
+        &__specialist {
+            width: 100%
+        }
+        &__row {
+            padding:  10px 0px;
+        }
+    }
+}

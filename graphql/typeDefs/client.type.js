@@ -26,6 +26,11 @@ export default gql`
         updatedBy: String
     }
 
+    input trainerData {
+        name: String!
+        specialist: [String!]
+    }
+
     input clientData {
         name: String!
         dob: String!
@@ -41,10 +46,13 @@ export default gql`
 
     extend type Query {
         clients(limit: Int!, skip: Int!): [Client!]!
+        trainers(limit: Int!, skip: Int!): [Trainer]
+        trainer(id: ID!): Trainer
         client(id: ID!): Client
     }
     
     extend type Mutation {
         createClient(input: clientData): Client      
+        createTrainer(input: trainerData): Trainer
     }
 `
