@@ -5,7 +5,7 @@ import styles from '../styles.module.scss'
 
 function Card (props) {
   const {
-    createdBy, dob, exercise, fees, id,
+    createdBy, dob, exercise, fees, id, image,
     joining_date, mobile_no, name, updatedAt, updatedBy
   } = props.data
 
@@ -22,7 +22,7 @@ function Card (props) {
       </div>
       <div className={styles.Cards__body}>
         <div className={styles.Cards__body__Img}>
-          <img src='#' alt='' />
+          <img src={image} alt='' />
         </div>
         <div className={styles.Cards__exercise}>
           {exercise}

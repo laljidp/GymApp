@@ -24,6 +24,7 @@ const startServer = async () => {
   const app = express()
   app.use(morgan())
   app.use(cors())
+  app.use(bodyParser({ limit: '1.5mb' }))
   app.use(bodyParser.urlencoded({ extended: false }))
   // parse application/json
   app.use(bodyParser.json())

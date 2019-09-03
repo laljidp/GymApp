@@ -8,6 +8,7 @@ export const fetchClients =
             name
             dob
             fees
+            image
             joining_date
             ending_date
             mobile_no

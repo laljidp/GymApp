@@ -13,6 +13,7 @@ export default gql`
         name: String!
         dob: String
         fees: Int
+        image: String
         isSpecialTraining: Boolean
         joining_date: String
         ending_date: String
@@ -29,6 +30,7 @@ export default gql`
         name: String!
         dob: String!
         fee: Int!
+        image: String
         joining_date: String!
         ending_date: String
         mobile_no: String!
