@@ -18,7 +18,6 @@ import jwtStrategy from './passport/jwt.passport'
 import { checkAuthentication } from './passport/auth.helper'
 dotenv.config()
 
-// import cors from 'cors'
 passport.use(jwtStrategy)
 const { MONGO_URL } = process.env
 
@@ -43,6 +42,7 @@ const startServer = async () => {
 
   const server = new ApolloServer({
     schema,
+    introspection: process.env.NODE_ENV !== 'production',
     context: async ({req}) => {
       // lookup userId by token, etc.
       const user = checkAuthentication(req)
@@ -93,7 +93,7 @@ const startServer = async () => {
   server.applyMiddleware({ app });
 
   const PORT = 4000;
-  
+  // Apollo 2 configuration
   // const server = new ApolloServer({
   //   typeDefs,
   //   resolvers,
