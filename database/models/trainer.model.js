@@ -1,28 +1,16 @@
 import mongoose from 'mongoose'
+import { COLLECTION } from './collections'
 
-export const Trainers = mongoose.model('trainer', {
-  name: {
-    type: String,
-    required: true
-  },
+export const TrainersInfo = mongoose.model(COLLECTION.TRAINERS_INFO, {
   specialist: {
     type: [String],
     required: true
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  trainingExperience: {
+    type: Number
   },
-  updatedAt: {
-    type: Date,
-    default: Date.now
-  },
-  createdBy: {
-    type: String,
-    required: true
-  },
-  updatedBy: {
-    type: String,
-    required: true
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: COLLECTION.USERS
   }
 })

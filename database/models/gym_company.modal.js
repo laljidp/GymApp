@@ -1,36 +1,40 @@
 import mongoose from 'mongoose'
 import { COLLECTION } from './collections'
-const {Schema} = mongoose
 
-export const Users = mongoose.model(COLLECTION.USERS, {
+export const GymCompany = mongoose.model(COLLECTION.GYM_COMPANY, {  
   name: {
     type: String,
     required: true
   },
-  username: {
+  displayName: {
     type: String,
     required: true
   },
-  email: {
+  ownerName: {
+    type: String,
+    required: true
+  },
+  ownerEmail: {
+    type: String
+  },
+  ownerPhoneNumber: {
+    type: String
+  },
+  description: {
+    type: String
+  },
+  logoUrl: {
+    type: String
+  },
+  smallLogoUrl :{
     type: String
   },
   address: {
     type: String
   },
-  phone_no: {
-    type: String
-  },
-  password: {
-    type: String
-  },
-  last_logged_in: {
-    type: Date,
-    default: null
-  },
-  role: {
-    type: String,
-    enum: ['super_admin', 'owner', 'subscriber', 'trainer'],
-    default: 'subscriber'
+  regular_fees: {
+    type: Number,
+    required: true
   },
   createdAt: {
     type: Date,
@@ -41,10 +45,5 @@ export const Users = mongoose.model(COLLECTION.USERS, {
     type: Date,
     required: true,
     default: Date.now()
-  },
-  gym_company: {
-    type: Schema.Types.ObjectId,
-    ref: COLLECTION.GYM_COMPANY,
-    default: null
   }
 })
