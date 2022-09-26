@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken'
 const SECRET_KEY = process.env.SECRET_KEY
 
 export const checkAuthentication = (req) => {
-  debugger
   if (req.headers && req.headers.authorization) {
     const { authorization } = req.headers
     const token = authorization.split(' ')[1]

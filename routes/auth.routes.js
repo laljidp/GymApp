@@ -15,6 +15,7 @@ Route.get('/', (req, res) => { res.send({ message: 'You\'re accessing auth route
 
 Route.post('/login', async (req, res) => {
   const { username, password } = req.body
+  console.log('req.body', req.body)
   const user = await Users.find({ username }).exec()
   console.log('user', user)
   if (user.length === 1) {

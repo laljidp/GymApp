@@ -10,8 +10,11 @@ import typeDefs from './graphql/typeDefs'
 import authRoutes from './routes/auth.routes'
 import resolvers from './graphql/Resolvers'
 import * as db from './database/models'
+import { createServer } from 'http';
+import { execute, subscribe } from 'graphql';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import jwtStrategy from './passport/jwt.passport'
-import bodyParser from 'body-parser'
 import { checkAuthentication } from './passport/auth.helper'
 dotenv.config()
 
@@ -20,19 +23,28 @@ passport.use(jwtStrategy)
 const { MONGO_URL } = process.env
 
 const startServer = async () => {
-  await mongoose.connect(MONGO_URL, { useNewUrlParser: true })
+  await mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true  })
   const app = express()
-  app.use(morgan())
-  app.use(cors())
-  app.use(bodyParser({ limit: '1.5mb' }))
-  app.use(bodyParser.urlencoded({ extended: false }))
-  // parse application/json
-  app.use(bodyParser.json())
-  app.use(express.static(path.join(__dirname, 'client', 'build')))
-  const server = new ApolloServer({
+  const httpServer = createServer(app);
+  const schema = makeExecutableSchema({
     typeDefs,
     resolvers,
-    context: async ({ req }) => {
+  });
+  let subscriptionServer;
+
+  app.use(morgan())
+  app.use(cors())
+  app.use(express.urlencoded({
+    extended: true
+  }));
+  // parse application/json
+  app.use(express.json());
+  app.use(express.static(path.join(__dirname, 'client', 'build')))
+
+  const server = new ApolloServer({
+    schema,
+    context: async ({req}) => {
+      // lookup userId by token, etc.
       const user = checkAuthentication(req)
       console.log('user', user)
       if (user) {
@@ -43,8 +55,61 @@ const startServer = async () => {
       } else {
         throw new Error('Unathhorized token')
       }
-    }
-  })
+    },
+    plugins: [{
+      async serverWillStart() {
+        return {
+          async drainServer() {
+            subscriptionServer.close();
+          }
+        };
+      }
+    }],
+  });
+
+  subscriptionServer = SubscriptionServer.create({
+    schema,
+    execute,
+    subscribe,
+    onConnect() {
+      // lookup userId by token, etc.
+      const user = checkAuthentication(req)
+      console.log('user', user)
+      if (user) {
+        return {
+          user,
+          ...db
+        }
+      } else {
+        throw new Error('Unathhorized token')
+      }
+    },
+  }, {
+    server: httpServer,
+    path: server.graphqlPath,
+  });
+
+  await server.start();
+  server.applyMiddleware({ app });
+
+  const PORT = 4000;
+  
+  // const server = new ApolloServer({
+  //   typeDefs,
+  //   resolvers,
+  //   context: async ({ req }) => {
+  //     const user = checkAuthentication(req)
+  //     console.log('user', user)
+  //     if (user) {
+  //       return {
+  //         user,
+  //         ...db
+  //       }
+  //     } else {
+  //       throw new Error('Unathhorized token')
+  //     }
+  //   }
+  // })
 
   app.get('/users', (req, res) => { res.send({ message: 'Users fetching...' }) })
 
@@ -56,7 +121,7 @@ const startServer = async () => {
     res.sendFile('index.html', { root: path.join(__dirname, 'client', 'build') })
   })
 
-  app.listen(4000, () => {
+  httpServer.listen(PORT, () => {
     console.log(`Running a GraphQL API server at localhost:4000${server.graphqlPath}`)
   })
 }
