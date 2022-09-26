@@ -1,17 +1,14 @@
-import clientResolver from './client.resolver'
-import attendanceResolver from './attendance.resolver'
 import userResolver from './user.resolver'
+import gym_companyResolver from './gym_company.resolver'
 
 const resolvers = {
   Query: {
-    ...clientResolver.Query,
-    ...attendanceResolver.Query,
-    ...userResolver.Query
+    ...userResolver.Query,
+    ...gym_companyResolver.Query
   },
   Mutation: {
-    ...clientResolver.Mutation,
-    ...attendanceResolver.Mutation,
-    ...userResolver.Mutation
+    ...userResolver.Mutation,
+    ...gym_companyResolver.Mutation
   }
 }
 

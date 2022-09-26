@@ -1,16 +1,9 @@
 import mongoose from 'mongoose'
+import { COLLECTION } from './collections'
 
-export const Clients = mongoose.model('client', {
-  name: {
-    type: String,
-    required: true
-  },
+export const SubscriberInfo = mongoose.model('subscriber_info', {
   dob: {
     type: Date,
-    required: true
-  },
-  mobile_no: {
-    type: String,
     required: true
   },
   exercise: {
@@ -32,23 +25,16 @@ export const Clients = mongoose.model('client', {
     type: Number,
     required: true
   },
-  image: {
-    type: String
-  },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now()
   },
   updatedAt: {
     type: Date,
-    default: Date.now
+    default: Date.now()
   },
-  createdBy: {
-    type: String,
-    required: true
-  },
-  updatedBy: {
-    type: String,
-    required: true
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: COLLECTION.USERS
   }
 })

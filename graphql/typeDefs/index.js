@@ -1,7 +1,6 @@
 import { gql } from 'apollo-server-express'
-import clientType from './client.type'
-import attendanceType from './attendance.type'
 import userType from './users.type'
+import gym_companyTypes from './gym_company.types'
 
 const rootSchema = gql`
     type Query {
@@ -12,6 +11,6 @@ const rootSchema = gql`
     }
 `
 
-const typeDefs = [rootSchema, clientType, attendanceType, userType]
+const typeDefs = [rootSchema, userType, gym_companyTypes]
 
 export default typeDefs

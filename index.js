@@ -115,8 +115,6 @@ const startServer = async () => {
 
   app.use('/auth', authRoutes)
 
-  server.applyMiddleware({ app })
-
   app.get('/*', (req, res) => {
     res.sendFile('index.html', { root: path.join(__dirname, 'client', 'build') })
   })

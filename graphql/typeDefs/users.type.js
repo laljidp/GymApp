@@ -7,8 +7,10 @@ type User {
     username: String!
     email: String
     phone_no: String
+    address: String
     password: String
     last_logged_in: String
+    role: String
     createdAt: String
     updatedAt: String
 }
@@ -21,9 +23,9 @@ input inputUser {
     name: String!
     username: String!
     email: String
+    address: String
     phone_no: String
-    password: String
-    last_logged_in: String
+    password: String!
 }
 
 extend type Mutation {

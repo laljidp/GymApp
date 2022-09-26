@@ -1,29 +1,18 @@
 import mongoose from 'mongoose'
-import { FKHelper } from '../db.helper'
+// import { FKHelper } from '../db.helper'
+import { COLLECTION } from './collections'
 
-export const Attendance = mongoose.model('attendance', {
+export const Attendance = mongoose.model(COLLECTION.ATTENDANCE, {
   date: { type: Date, default: Date.now() },
-  in_time: { type: Date, required: true },
-  out_time: { type: Date, required: true },
-  user: {
+  session: {
     type: String,
     required: true,
-    ref: 'users',
-    validate: {
-      validator: (v) => {
-        return FKHelper(mongoose.model('users'), v)
-      },
-      message: `User doesn't exists.`
-    }
   },
+  users: [{
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: COLLECTION.USERS,
+  }],
   createdAt: { type: Date, default: Date.now() },
-  updatedAt: { type: Date, default: Date.now() },
-  createdBy: {
-    type: String,
-    required: true
-  },
-  updatedBy: {
-    type: String,
-    required: true
-  }
+  updatedAt: { type: Date, default: Date.now() }
 })
