@@ -9,9 +9,9 @@ import Typography from '@mui/material/Typography';
 
 export default function CompanyLists({ companies = [] }) {
   return (
-    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
       {companies.map((comp) => (
-        <>
+        <React.Fragment key={comp.id}>
           <ListItem alignItems="flex-start">
             <ListItemAvatar>
               <Avatar alt={comp?.name || 'N/A'} src="/static/images/avatar/1.jpg" />
@@ -27,14 +27,13 @@ export default function CompanyLists({ companies = [] }) {
                     color="text.primary"
                   >
                     {comp.ownerEmail || 'N/A'}
-                  </Typography> <br/>
-                  {comp.address}
+                  </Typography>
                 </React.Fragment>
               }
             />
           </ListItem>
           <Divider variant="inset" component="li" />
-        </>
+        </React.Fragment>
       ))}
     </List>
   );

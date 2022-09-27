@@ -1,3 +1,3 @@
-import Companies from "./companies";
+import Companies from "./Companies";
 
 export default Companies

@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 export const fetchCompanies = gql`
 query Companies($limit: Int!, $skip: Int!) {
     gym_companies(limit: $limit, skip: $skip) {
+      id
       address
       createdAt
       description

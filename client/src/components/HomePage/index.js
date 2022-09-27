@@ -1,12 +1,12 @@
 import React from 'react'
 
-function Dashboard (props) {
+function HomePage (props) {
   console.log('props.client', props.client)
   return (
     <div>
-      <h1> Dashboard page</h1>
+      <h1> Home page</h1>
     </div>
   )
 }
 
-export default Dashboard
+export default HomePage
