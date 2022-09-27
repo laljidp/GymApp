@@ -8,6 +8,7 @@ import Clients from './components/Clients'
 import Attendance from './components/Attendance'
 import Trainer from './components/Trainer'
 import Payment from './components/Payment'
+import Companies from './components/companies'
 import NotFound from './components/ResultsPages/404notFound'
 
 function App (props) {
@@ -16,6 +17,7 @@ function App (props) {
       <Switch>
         <Route exact path='/' component={Login} />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />
+        <PrivateRoute exact path='/companies' component={Companies} />
         <PrivateRoute exact path='/clients' component={Clients} />
         <PrivateRoute exact path='/trainer' component={Trainer} />
         <PrivateRoute exact path='/attendance' component={Attendance} />

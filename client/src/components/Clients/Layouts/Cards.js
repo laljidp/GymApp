@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import moment from 'moment'
-import { Button } from 'antd'
 import styles from '../styles.module.scss'
 
 function Card (props) {
   const {
-    createdBy, dob, exercise, fees, id, image,
-    joining_date, mobile_no, name, updatedAt, updatedBy
+    exercise, id, image,
+    joining_date, mobile_no, name
   } = props.data
 
   const [cardInfoModal, toggleModal] = useState(false)

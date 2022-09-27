@@ -2,31 +2,30 @@ import React, { useState } from 'react'
 import { Input, Icon, Button } from 'antd'
 import { graphql } from 'react-apollo'
 import styles from './styles.module.scss'
-import TrainerList from './Layouts/TrainerList'
-import AddTrainerModal from './Layouts/AddTrainerModal'
-import { createTrainer, fetchTrainers } from '../../client-graphql/Queries/trainer.query'
+import { fetchTrainers } from '../../client-graphql/Queries/trainer.query'
 
 function Trainer ({ loading, data, err }) {
   const [open, setOpen] = useState(false)
-  const [formData, setFormData] = useState({})
+  // const [formData, setFormData] = useState({})
 
   const toggleModal = () => {
     setOpen(!open)
   }
 
   const { trainers } = data
+  console.log('trainers', trainers)
 
-  const onChange = (e) => {
-    const { name, value } = e.target
-    setFormData({
-      ...formData,
-      [name]: value
-    })
-  }
+  // const onChange = (e) => {
+  //   const { name, value } = e.target
+  //   setFormData({
+  //     ...formData,
+  //     [name]: value
+  //   })
+  // }
 
-  const handleSave = () => {
-    console.log('formData', formData)
-  }
+  // const handleSave = () => {
+  //   console.log('formData', formData)
+  // }
 
   console.log('data', data)
 
@@ -52,25 +51,6 @@ function Trainer ({ loading, data, err }) {
         />
         <Button type='primary' onClick={toggleModal}> Add Trainer </Button>
       </div>
-      <div>
-        <TrainerList trainers={trainers} />
-      </div>
-      <AddTrainerModal
-        visible={open}
-        onChange={onChange}
-        formData={formData}
-        header={'Add New Trainer'}
-        footer={
-          <Button
-            type='primary'
-            onClick={handleSave}
-          >
-            Save
-          </Button>
-        }
-        onCancel={toggleModal}
-      />
-
     </div>
   )
 }
