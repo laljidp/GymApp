@@ -19,3 +19,21 @@ query Companies($limit: Int!, $skip: Int!) {
     }
   }
 `
+
+export const createCompany = gql`
+mutation CreateGymCompany($company: inputGymCompany!) {
+  createGymCompany(input: $company) {
+   id
+   name
+   address
+   description
+   displayName
+   logoUrl
+   ownerEmail
+   ownerName
+   regular_fees
+   smallLogoUrl
+   createdAt 
+  }
+}
+`

@@ -1,18 +1,76 @@
-import { Alert, Container } from "@mui/material";
-import React from "react";
+import { Alert, Button, Container } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
+import React, { useState } from "react";
+import { useMutation } from '@apollo/react-hooks';
+import SaveIcon from '@mui/icons-material/Save';
 import Box from '@mui/material/Box';
 import { makeStyles } from '@mui/styles';
 import TextField from '@mui/material/TextField';
+import { createCompany } from "../../client-graphql/Queries/companies.query";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles({
   inputControl: {
     marginBottom: '15px'
+  },
+  actionSection: {
+    margin: '10px 0',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    '& button': {
+      marginLeft: '10px'
+    }
+
   }
 })
 
 const AddCompany = () => {
 
+  const [payload, setPayload] = useState({
+    name: '',
+    displayName: '',
+    address: '',
+    description: '',
+    logoUrl: null,
+    ownerEmail: '',
+    ownerName: '',
+    regular_fees: '',
+    ownerPhoneNumber: '',
+    smallLogoUrl: null,
+  })
+  const [loading, setLoading] = useState(false)
   const classes = useStyles()
+  const history = useHistory()
+  const [createGymCompany] = useMutation(createCompany, {
+    variables: {
+      company: {
+        ...payload,
+        regular_fees: Number(payload.regular_fees)
+      }
+    },
+    // to observe what the mutation response returns
+    onCompleted: data => {
+      console.log('created company data', data);
+      setLoading(false)
+    },
+    onError: err => {
+      console.log('Error while creating company', err)
+      setLoading(false)
+    }
+  });
+
+  const handleChange = ({ target }) => {
+    const { name, value } = target
+    setPayload({
+      ...payload,
+      [name]: value
+    })
+  }
+
+  const handleSave = () => {
+    setLoading(true)
+    createGymCompany()
+  }
 
   return (
     <Container maxWidth={'sm'} disableGutters>
@@ -25,8 +83,101 @@ const AddCompany = () => {
         noValidate
         autoComplete="off"
       >
-        <TextField className={classes.inputControl} fullWidth size="small" id="outlined-basic" label="Name *" variant="outlined" name="name" />
-        <TextField className={classes.inputControl} fullWidth size="small" id="outlined-basic" label="Display Name *" variant="outlined" name="displayName" />
+        <TextField
+          className={classes.inputControl}
+          fullWidth
+          size="small"
+          id="outlined-basic"
+          label="Name *"
+          variant="outlined"
+          onChange={handleChange}
+          name="name"
+          value={payload.name}
+        />
+        <TextField
+          className={classes.inputControl}
+          fullWidth
+          size="small"
+          id="outlined-basic"
+          label="Display Name *"
+          variant="outlined"
+          name="displayName"
+          onChange={handleChange}
+          value={payload.displayName}
+        />
+        <TextField
+          className={classes.inputControl}
+          fullWidth
+          size="small"
+          id="outlined-basic"
+          label="Owner Name *"
+          variant="outlined"
+          onChange={handleChange}
+          name="ownerName"
+          value={payload.ownerName}
+        />
+        <TextField
+          className={classes.inputControl}
+          fullWidth
+          size="small"
+          id="outlined-basic"
+          label="Owner Email *"
+          variant="outlined"
+          value={payload.ownerEmail}
+          name="ownerEmail"
+          onChange={handleChange}
+        />
+        <TextField
+          className={classes.inputControl}
+          fullWidth
+          size="small"
+          type={'number'}
+          id="outlined-basic"
+          label="Regular Monthly Fees *"
+          variant="outlined"
+          value={payload.regular_fees}
+          name="regular_fees"
+          onChange={handleChange}
+        />
+
+        <TextField
+          className={classes.inputControl}
+          fullWidth
+          size="small"
+          id="outlined-basic"
+          value={payload.ownerPhoneNumber}
+          label="Owner PhoneNumber"
+          variant="outlined"
+          name="ownerPhoneNumber"
+          onChange={handleChange}
+        />
+        <TextField
+          id="outlined-multiline-static"
+          label="Address"
+          multiline
+          value={payload.address}
+          rows={4}
+          name='address'
+          size="small"
+          fullWidth
+          onChange={handleChange}
+        />
+        <div className={classes.actionSection}>
+          <Button onClick={history.goBack} variant="outlined" size="small">
+            Cancel
+          </Button>
+          <LoadingButton
+            size="small"
+            color="secondary"
+            onClick={handleSave}
+            loading={loading}
+            loadingPosition="end"
+            endIcon={<SaveIcon />}
+            variant="contained"
+          >
+            Save
+          </LoadingButton>
+        </div>
       </Box>
     </Container>
   )
