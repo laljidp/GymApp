@@ -1,8 +1,11 @@
 export default {
   Query: {
-    gym_companies: (parent, args, { GymCompany }, info) => { // context is the one in which we will pass mongo model
-      return GymCompany.find().exec()
-    }
+    companies: (parent, { limit, skip }, { GymCompany }, info) => { // context is the one in which we will pass mongo model
+      return GymCompany.find().skip(skip).limit(limit).exec()
+    },
+    company: (parent, { id }, { GymCompany }, info) => {
+      return GymCompany.findById(id).exec()
+    },
   },
   Mutation: {
     createGymCompany: (parent, args, { GymCompany }, info) => {

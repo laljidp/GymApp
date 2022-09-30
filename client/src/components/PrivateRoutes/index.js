@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import NavBar from '../NavBar'
+import MenuAppBar from '../MenuAppBar'
 
 function PrivateRoute ({ component: Component, ...rest }) {
   return (
@@ -9,9 +9,10 @@ function PrivateRoute ({ component: Component, ...rest }) {
       render={(props) => {
         if (window.localStorage.getItem('Token')) {
           return (
-            <NavBar>
+            <div>
+              <MenuAppBar />
               <Component {...props} />
-            </NavBar>
+            </div>
           )
         }
         return <Redirect to='/' />

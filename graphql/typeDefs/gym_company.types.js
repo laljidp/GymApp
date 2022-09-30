@@ -2,6 +2,7 @@ import { gql } from 'apollo-server-express'
 
 export default gql`
     type GymCompany {
+        id: ID
         name: String!
         displayName: String!
         ownerName: String!
@@ -17,7 +18,8 @@ export default gql`
     }
 
     extend type Query {
-        gym_companies: [GymCompany!]!
+        companies(limit: Int!, skip: Int!): [GymCompany!]!
+        company(id: ID!): GymCompany!
     }
 
     input inputGymCompany {

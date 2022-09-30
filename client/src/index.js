@@ -5,6 +5,7 @@ import { ApolloProvider } from 'react-apollo'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+import { HashRouter } from 'react-router-dom'
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
@@ -18,12 +19,29 @@ const client = new ApolloClient({
         authorization: `Bearer ${window.localStorage.getItem('Token')}`
       }
     })
+  },
+  onError: (error) => {
+    const [err,] = error.graphQLErrors
+    if (err && (err?.message?.toLowerCase()?.includes('invalid signature') ||
+      err?.message?.toLowerCase()?.includes('invalid token')
+    )
+    ) {
+      console.log('Logout the user')
+      localStorage.removeItem('Token')
+      window.location.href = '/'
+    }
+    console.log('error ', error.graphQLErrors)
   }
 })
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <HashRouter
+      basename={'/'}
+    >
+      <App />
+
+    </HashRouter>
   </ApolloProvider>
   , document.getElementById('root'))
 

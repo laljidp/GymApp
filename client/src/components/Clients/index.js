@@ -59,7 +59,7 @@ function Clients ({ data, ...rest }) {
 
   const handleSave = () => {
     console.log('save', form)
-    const { name, exercise, isSpecialTraining, joiningDate, mobile_no: mobileNo, dob, image } = form
+    const { name, exercise, isSpecialTraining, joiningDate, mobile_no: mobileNo, dob } = form
     const fee = 500 + isSpecialTraining ? 200 : 0
     addClient({
       variables: {

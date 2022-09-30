@@ -42,7 +42,7 @@ const startServer = async () => {
 
   const server = new ApolloServer({
     schema,
-    introspection: process.env.NODE_ENV !== 'production',
+    introspection: process?.env?.NODE_ENV !== 'production',
     context: async ({req}) => {
       // lookup userId by token, etc.
       const user = checkAuthentication(req)
