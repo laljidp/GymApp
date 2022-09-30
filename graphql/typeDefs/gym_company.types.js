@@ -18,7 +18,8 @@ export default gql`
     }
 
     extend type Query {
-        gym_companies(limit: Int!, skip: Int!): [GymCompany!]!
+        companies(limit: Int!, skip: Int!): [GymCompany!]!
+        company(id: ID!): GymCompany!
     }
 
     input inputGymCompany {

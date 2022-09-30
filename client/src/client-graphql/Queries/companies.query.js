@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export const fetchCompanies = gql`
 query Companies($limit: Int!, $skip: Int!) {
-    gym_companies(limit: $limit, skip: $skip) {
+  companies(limit: $limit, skip: $skip) {
       id
       address
       createdAt
@@ -18,6 +18,25 @@ query Companies($limit: Int!, $skip: Int!) {
       updatedAt
     }
   }
+`
+
+export const fetchCompanyByID = gql`
+query CompanyByID ($id: ID!) {
+  company(id:$id) {
+    address
+    createdAt
+    description
+    displayName
+    id
+    name
+    ownerEmail
+    ownerName
+    smallLogoUrl
+    logoUrl
+    ownerPhoneNumber
+    regular_fees
+  }
+}
 `
 
 export const createCompany = gql`

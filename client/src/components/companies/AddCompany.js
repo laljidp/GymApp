@@ -8,6 +8,13 @@ import { makeStyles } from '@mui/styles';
 import TextField from '@mui/material/TextField';
 import { createCompany } from "../../client-graphql/Queries/companies.query";
 import { useHistory } from "react-router";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { URLS } from "../../constants/UrlsConfig";
+
+const MyAlert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const useStyles = makeStyles({
   inputControl: {
@@ -38,9 +45,11 @@ const AddCompany = () => {
     ownerPhoneNumber: '',
     smallLogoUrl: null,
   })
+  const [showSnackbar, setShowSnackbar] = useState(false)
   const [loading, setLoading] = useState(false)
   const classes = useStyles()
   const history = useHistory()
+  const [error, setError] = useState({})
   const [createGymCompany] = useMutation(createCompany, {
     variables: {
       company: {
@@ -52,12 +61,21 @@ const AddCompany = () => {
     onCompleted: data => {
       console.log('created company data', data);
       setLoading(false)
+      history.push(URLS.companiesListing)
     },
     onError: err => {
       console.log('Error while creating company', err)
       setLoading(false)
     }
   });
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+  
+    setShowSnackbar(false);
+  };
 
   const handleChange = ({ target }) => {
     const { name, value } = target
@@ -67,8 +85,37 @@ const AddCompany = () => {
     })
   }
 
+  const checkValidation = () => {
+    let isValid = true;
+    const error = {}
+    if (!payload.name.trim()) {
+      isValid = false;
+      error.name = 'Name is required!'
+    }
+    if (!payload.displayName.trim()) {
+      isValid = false;
+      error.displayName = 'Display name is required!'
+    }
+    if (!payload.ownerName.trim()) {
+      isValid = false;
+      error.ownerName = 'Owner name is required!'
+    }
+    if (!payload.regular_fees) {
+      isValid = false;
+      error.regular_fees = 'Regular fees field is required!'
+    }
+    setError(error)
+    return isValid;
+  }
+
   const handleSave = () => {
+    // check  validation
+    if (!checkValidation()) {
+        setShowSnackbar(true)
+        return;
+    }
     setLoading(true)
+    // call the create company mutation
     createGymCompany()
   }
 
@@ -89,6 +136,8 @@ const AddCompany = () => {
           size="small"
           id="outlined-basic"
           label="Name *"
+          error={!!error?.name}
+          helperText={error?.name}
           variant="outlined"
           onChange={handleChange}
           name="name"
@@ -98,6 +147,8 @@ const AddCompany = () => {
           className={classes.inputControl}
           fullWidth
           size="small"
+          error={!!error?.displayName}
+          helperText={error?.displayName}
           id="outlined-basic"
           label="Display Name *"
           variant="outlined"
@@ -111,6 +162,8 @@ const AddCompany = () => {
           size="small"
           id="outlined-basic"
           label="Owner Name *"
+          error={!!error?.ownerName}
+          helperText={error?.ownerName}
           variant="outlined"
           onChange={handleChange}
           name="ownerName"
@@ -121,7 +174,7 @@ const AddCompany = () => {
           fullWidth
           size="small"
           id="outlined-basic"
-          label="Owner Email *"
+          label="Owner Email"
           variant="outlined"
           value={payload.ownerEmail}
           name="ownerEmail"
@@ -133,6 +186,8 @@ const AddCompany = () => {
           size="small"
           type={'number'}
           id="outlined-basic"
+          error={!!error?.regular_fees}
+          helperText={error?.regular_fees}
           label="Regular Monthly Fees *"
           variant="outlined"
           value={payload.regular_fees}
@@ -178,6 +233,11 @@ const AddCompany = () => {
             Save
           </LoadingButton>
         </div>
+        <Snackbar open={showSnackbar} autoHideDuration={5000} onClose={handleClose}>
+          <MyAlert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+            Please fill the required field!
+          </MyAlert>
+          </Snackbar>
       </Box>
     </Container>
   )

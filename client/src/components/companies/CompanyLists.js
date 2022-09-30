@@ -7,12 +7,13 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
-export default function CompanyLists({ companies = [] }) {
+export default function CompanyLists({ companies = [], handleRedirection }) {
+
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
       {companies.map((comp) => (
         <React.Fragment key={comp.id}>
-          <ListItem alignItems="flex-start">
+          <ListItem alignItems="flex-start" onClick={() => handleRedirection(comp.id)}>
             <ListItemAvatar>
               <Avatar alt={comp?.name || 'N/A'} src="/static/images/avatar/1.jpg" />
             </ListItemAvatar>
@@ -26,7 +27,7 @@ export default function CompanyLists({ companies = [] }) {
                     variant="body2"
                     color="text.primary"
                   >
-                    {comp.ownerEmail || 'N/A'}
+                    {comp.ownerName || 'N/A'}
                   </Typography>
                 </React.Fragment>
               }
