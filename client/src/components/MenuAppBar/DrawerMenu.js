@@ -12,10 +12,13 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import FitnessCenterTwoToneIcon from '@mui/icons-material/FitnessCenterTwoTone';
+import { URLS } from '../../constants/UrlsConfig';
+import PeopleIcon from '@mui/icons-material/People';
 
 const MENU_ITEMS = [
-  { title: "Home", name: 'home', url: '/home', Icon:  <DashboardOutlinedIcon />},
-  { title: "Companies", name: 'companies', url: '/companies', Icon:  <FitnessCenterTwoToneIcon />}
+  { title: "Home", name: 'home', url: URLS.homePage, Icon:  <DashboardOutlinedIcon />},
+  { title: "Companies", name: 'companies', url: URLS.companiesListing, Icon:  <FitnessCenterTwoToneIcon />},
+  { title: "Users", name: 'users', url: URLS.usersPage, Icon:  <PeopleIcon />}
 
 ]
 

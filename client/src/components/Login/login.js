@@ -1,12 +1,14 @@
+import * as yup from "yup";
 import React, { useState } from 'react'
 import axios from 'axios'
 import { makeStyles } from '@mui/styles';
+import { useFormik } from 'formik'
 import LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import LogoImage from '../../assets/images/gymnasium-logo.jpg'
 import { useHistory } from 'react-router';
-import { URLS } from '../../constants/UrlsConfig';
+import { URLS } from '../../constants/UrlsConfig'
 import { Snackbar } from '@mui/material';
 import './login.scss'
 
@@ -26,25 +28,59 @@ const useStyles = makeStyles({
 })
 
 
-const LoginForm = () => {
+const LoginForm = (props) => {
 
-  const [payload, setPayload] = useState({
-    username: '',
-    password: ''
-  })
   const history = useHistory()
   const [toast, setToast] = useState({ show: false, message: '' })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState({})
+  const [isProcessing, setIsProcessing] = useState(false)
+  const {
+    values,
+    errors,
+    handleSubmit,
+    touched,
+    handleChange,
+  } = useFormik({
+    initialValues: {
+      username: '',
+      password: ''
+    },
+    enableReinitialize: true,
+    validationSchema: yup.object().shape({
+      username: yup
+        .string()
+        .required("Username is Required!"),
+      password: yup
+        .string()
+        .required("Enter your password!")
+        .min(4, "Password must contain at least 4 characters!")
+    }),
+    onSubmit: (values) => {
+      console.log('Received values of form: ', values)
+      setIsProcessing(true)
+      axios.post('http://localhost:4000/auth/login', values)
+        .then((res, err) => {
+          if (res.data.token) {
+            window.localStorage.setItem('Token', res.data.token)
+            history.push(URLS.homePage)
+          } else {
+            setToast({
+              show: true,
+              message: 'Invalid Credentials!'
+            })
+            setIsProcessing(false)
+          }
+        })
+        .catch(err => {
+          console.log('err on login request: ', err)
+          setToast({
+            show: true,
+            message: 'Invalid Credentials!'
+          })
+          setIsProcessing(false)
+        })
+    }
+  })
   const classes = useStyles()
-
-  const handleChange = ({ target }) => {
-    const { name, value } = target
-    setPayload({
-      ...payload,
-      [name]: value
-    })
-  }
 
   const hideToast = () => {
     setToast({
@@ -53,59 +89,6 @@ const LoginForm = () => {
     })
   }
 
-  const checkUsername = () => {
-    let isValid = true
-    if (!payload.username) {
-      setError({
-        ...error,
-        username: 'Please enter email'
-      })
-      isValid = false
-    } else {
-      setError({
-        ...error,
-        email: null
-      })
-    }
-    return isValid
-  }
-
-  const handleSubmit = e => {
-    e.preventDefault()
-    setLoading(true)
-    if (!checkUsername()) {
-      return;
-    }
-    console.log('Received values of form: ', payload)
-    axios.post('http://localhost:4000/auth/login', payload)
-      .then((res, err) => {
-        console.log('res', res)
-        console.log('err', err)
-        if (res.data.token) {
-          window.localStorage.setItem('Token', res.data.token)
-          history.push(URLS.homePage)
-        } else {
-          setToast({
-            show: true,
-            message: 'Invalid Credentials!'
-          })
-          console.error('Login failed..')
-          // show snackbar
-        }
-        setLoading(false)
-      })
-      .catch(err => {
-        console.log('err', err)
-        setToast({
-          show: true,
-          message: 'Invalid Credentials!'
-        })
-        setLoading(false)
-        // show snackbar
-
-      })
-  };
-
   return (
     <div className='login-container'>
       <div className='login-div'>
@@ -113,13 +96,12 @@ const LoginForm = () => {
           component="form"
           sx={{
             padding: '10px',
-            margin: '50% 0'
+            margin: 'auto'
           }}
           onSubmit={handleSubmit}
-          noValidate
           autoComplete="off"
         >
-          <div class={classes.logoDiv}>
+          <div className={classes.logoDiv}>
             <img
               className={classes.logoImg}
               alt='my-logo'
@@ -132,14 +114,14 @@ const LoginForm = () => {
             size="small"
             id="outlined-basic"
             label="Username *"
-            error={!!error?.username}
+            error={!!errors?.username && touched?.username}
             color="secondary"
-            helperText={error?.username}
+            helperText={(touched?.username && !!errors?.username) ? errors?.username : ''}
             variant="outlined"
             onChange={handleChange}
             name="username"
             type="username"
-            value={payload.username}
+            value={values?.username || ''}
             sx={{ marginBottom: '1.5rem' }}
           />
           <TextField
@@ -148,24 +130,25 @@ const LoginForm = () => {
             size="small"
             id="outlined-basic"
             label="Password *"
-            error={!!error?.name}
+            error={!!errors?.password && !!touched?.password}
             color="secondary"
-            helperText={error?.name}
+            helperText={(touched?.password && !!errors?.password) ? errors?.password : ''}
             variant="outlined"
             onChange={handleChange}
             name="password"
             type='password'
             sx={{ marginBottom: '1.5rem' }}
-            value={payload.password}
+            value={values?.password || ''}
           />
-          <div sx={{ display: 'grid' }}>
+          <div>
             <LoadingButton
-              loading={loading}
+              loading={isProcessing}
               loadingPosition="end"
               color='secondary'
               variant="outlined"
               type='submit'
               fullWidth
+              endIcon={<span />}
               onClick={handleSubmit}
             >
               Login
@@ -181,7 +164,6 @@ const LoginForm = () => {
         </Box>
       </div>
     </div>
-
   )
 }
 

@@ -9,14 +9,22 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import DrawerMenu from './DrawerMenu';
+import { useHistory } from 'react-router';
 
 export default function MenuAppBar() {
   const [showDrawer, setShowDrawer] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const history = useHistory()
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const handleLogout = () => {
+    window.localStorage.removeItem('Token')
+    history.push('/')
+    
+  }
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -65,8 +73,8 @@ export default function MenuAppBar() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleClose}>My Profile</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </div>
           <DrawerMenu open={showDrawer} toggleDrawer={setShowDrawer} />
