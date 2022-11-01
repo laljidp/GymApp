@@ -10,7 +10,6 @@
     "@mui/lab": "^5.0.0-alpha.101",
     "@mui/material": "^5.10.7",
     "@mui/styles": "^5.10.7",
-    "antd": "^3.21.4",
     "apollo-boost": "^0.4.4",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-link-context": "^1.0.18",

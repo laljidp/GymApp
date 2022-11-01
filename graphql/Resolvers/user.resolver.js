@@ -1,7 +1,7 @@
 export default {
   Query: {
-    users: (parent, args, { Users }, info) => { // context is the one in which we will pass mongo model
-      return Users.find().exec()
+    users: (parent, { limit, skip }, { Users }, info) => { // context is the one in which we will pass mongo model
+      return Users.find().skip(skip).limit(limit).exec()
     }
   },
   Mutation: {

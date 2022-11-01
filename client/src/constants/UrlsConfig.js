@@ -3,5 +3,12 @@ export const URLS = {
     companiesListing: '/companies',
     viewCompanyInfo: '/companies/:id',
     homePage: '/home',
-    usersPage: '/users'
+    usersPage: '/users',
+    addUserPage: '/user/add'
+}
+
+export const storageKeys = {
+    isAuthenticated: 'isAuthenticated',
+    token: 'Token',
+    user: 'user'
 }

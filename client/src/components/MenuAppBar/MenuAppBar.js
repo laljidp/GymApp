@@ -10,20 +10,21 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import DrawerMenu from './DrawerMenu';
 import { useHistory } from 'react-router';
+import { useAuth } from '../../Hooks/userAuthHook';
 
 export default function MenuAppBar() {
   const [showDrawer, setShowDrawer] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const history = useHistory()
+  const { logout } = useAuth()
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleLogout = () => {
-    window.localStorage.removeItem('Token')
-    history.push('/')
-    
+    logout()
+    history.push('/')    
   }
 
   const handleClose = () => {

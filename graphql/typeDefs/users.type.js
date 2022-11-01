@@ -16,7 +16,7 @@ type User {
 }
 
 extend type Query {
-    users: [User!]!
+    users(limit: Int!, skip: Int!): [User!]!
 }
 
 input inputUser {

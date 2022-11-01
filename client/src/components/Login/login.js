@@ -11,6 +11,7 @@ import { useHistory } from 'react-router';
 import { URLS } from '../../constants/UrlsConfig'
 import { Snackbar } from '@mui/material';
 import './login.scss'
+import { useAuth } from "../../Hooks/userAuthHook";
 
 
 const useStyles = makeStyles({
@@ -31,6 +32,7 @@ const useStyles = makeStyles({
 const LoginForm = (props) => {
 
   const history = useHistory()
+  const { setUser, setIsAuthenticated } = useAuth()
   const [toast, setToast] = useState({ show: false, message: '' })
   const [isProcessing, setIsProcessing] = useState(false)
   const {
@@ -60,7 +62,8 @@ const LoginForm = (props) => {
       axios.post('http://localhost:4000/auth/login', values)
         .then((res, err) => {
           if (res.data.token) {
-            window.localStorage.setItem('Token', res.data.token)
+            setUser(res.data)
+            setIsAuthenticated(true)
             history.push(URLS.homePage)
           } else {
             setToast({

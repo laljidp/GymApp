@@ -20,7 +20,7 @@ Route.post('/login', async (req, res) => {
   console.log('user', user)
   if (user.length === 1) {
     if (bcrypt.compareSync(password, user[0].password)) {
-      const { username, email, id, name } = user[0]
+      const { username, email, id, name, role } = user[0]
       const opts = {}
       opts.expiresIn = 60 * 60 * 24 // token expires in 2min
       const secret = SECRET_KEY // normally stored in process.env.secret
@@ -28,7 +28,7 @@ Route.post('/login', async (req, res) => {
         username, __id: id, name, email
       }, secret, opts)
       console.log('token', token)
-      res.send({ token })
+      res.send({ token, username, email, id, name, role })
     } else {
       res.status(401).json({ message: 'Invalid password' })
     }

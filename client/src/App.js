@@ -14,6 +14,7 @@ import PageLoader from './components/UI/PageLoader'
 
 const Companies = React.lazy(() => import('./components/Companies'));
 const UsersPage = React.lazy(() => import('./components/Users'));
+const AddEditUser = React.lazy(() => import('./components/Users/AddEditUser'));
 
 function App(props) {
   return (
@@ -27,11 +28,11 @@ function App(props) {
           <PrivateRoute exact path={URLS.companiesListing} component={Companies} />
           <PrivateRoute exact path={URLS.viewCompanyInfo} component={ViewCompanyInfo} />
           <PrivateRoute exact path={URLS.usersPage} component={UsersPage} />
+          <PrivateRoute exact path={URLS.addUserPage} component={AddEditUser} />
           <PrivateRoute exact path='/trainer' component={Trainer} />
           <PrivateRoute exact path='/attendance' component={Attendance} />
           <PrivateRoute exact path='/payment' component={Payment} />
           <PrivateRoute exact path={URLS.addCompany} component={AddCompany} />
-
           <Route component={NotFound} />
         </Switch>
       </HashRouter >

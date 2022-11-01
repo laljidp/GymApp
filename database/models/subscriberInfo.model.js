@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import { COLLECTION } from './collections'
 
-export const SubscriberInfo = mongoose.model('subscriber_info', {
+export const SubscriberInfo = mongoose.model(COLLECTION.SUBSCRIBER_INFO, {
   dob: {
     type: Date,
     required: true

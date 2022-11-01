@@ -5,6 +5,7 @@ import { ApolloProvider } from 'react-apollo'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+import RootUserProvider from './context/RootUserContext'
 import { HashRouter } from 'react-router-dom'
 
 const client = new ApolloClient({
@@ -36,12 +37,14 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <HashRouter
-      basename={'/'}
-    >
-      <App />
+    <RootUserProvider>
+      <HashRouter
+        basename={'/'}
+      >
+        <App />
 
-    </HashRouter>
+      </HashRouter>
+    </RootUserProvider>
   </ApolloProvider>
   , document.getElementById('root'))
 
