@@ -4,11 +4,12 @@ export const fetchUsers =
   gql`
   query fetchUsers($limit: Int!, $skip: Int!) {
     users(limit: $limit, skip: $skip) {
-      createdAt
-      email
-      last_logged_in
+      id      
+      email      
       name
       phone_no
       role
+      createdAt
+      last_logged_in
     }
   }`

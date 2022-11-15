@@ -1,8 +1,11 @@
 import mongoose from 'mongoose'
+import { StringSchema } from 'yup'
 // import { FKHelper } from '../db.helper'
 import { COLLECTION } from './collections'
 
-export const Attendance = mongoose.model(COLLECTION.ATTENDANCE, {
+const { Schema } = mongoose
+
+export const Attendance = mongoose.model(COLLECTION.ATTENDANCE, new Schema({
   date: { type: Date, default: Date.now() },
   session: {
     type: String,
@@ -13,6 +16,7 @@ export const Attendance = mongoose.model(COLLECTION.ATTENDANCE, {
     required: true,
     ref: COLLECTION.USERS,
   }],
-  createdAt: { type: Date, default: Date.now() },
-  updatedAt: { type: Date, default: Date.now() }
-})
+  note: {
+    type: String,
+  }
+}, { timestamps: true }))

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { storageKeys } from "../constants/UrlsConfig";
 
-
 export const RootUserContext = React.createContext({
   user: '',
   isAuthenticated: false,

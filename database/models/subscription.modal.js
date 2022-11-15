@@ -1,7 +1,9 @@
 import mongoose from 'mongoose'
 import { COLLECTION } from './collections'
 
-export const Subscription = mongoose.model(COLLECTION.SUBSCRIPTION, {
+const { Schema } = mongoose
+
+export const Subscription = mongoose.model(COLLECTION.SUBSCRIPTION, new Schema({
   name: {
     type: String,
     required: true
@@ -19,13 +21,5 @@ export const Subscription = mongoose.model(COLLECTION.SUBSCRIPTION, {
     type: Number,
     required: true,
     default: 1
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now()
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now()
   }
-})
+}, { timestamps: true }))

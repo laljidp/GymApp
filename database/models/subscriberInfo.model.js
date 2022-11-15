@@ -1,7 +1,7 @@
-import mongoose from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
 import { COLLECTION } from './collections'
 
-export const SubscriberInfo = mongoose.model(COLLECTION.SUBSCRIBER_INFO, {
+export const SubscriberInfo = mongoose.model(COLLECTION.SUBSCRIBER_INFO, new Schema({
   dob: {
     type: Date,
     required: true
@@ -25,16 +25,8 @@ export const SubscriberInfo = mongoose.model(COLLECTION.SUBSCRIBER_INFO, {
     type: Number,
     required: true
   },
-  createdAt: {
-    type: Date,
-    default: Date.now()
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now()
-  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: COLLECTION.USERS
   }
-})
+}, { timestamps: true }))

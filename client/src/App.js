@@ -4,7 +4,6 @@ import Login from './components/Login/login'
 import HomePage from './components/HomePage'
 import PrivateRoute from './components/PrivateRoutes'
 import Attendance from './components/Attendance'
-import Trainer from './components/Trainer'
 import Payment from './components/Payment'
 import AddCompany from './components/Companies/AddCompany'
 import NotFound from './components/ResultsPages/404notFound'
@@ -29,7 +28,6 @@ function App(props) {
           <PrivateRoute exact path={URLS.viewCompanyInfo} component={ViewCompanyInfo} />
           <PrivateRoute exact path={URLS.usersPage} component={UsersPage} />
           <PrivateRoute exact path={URLS.addUserPage} component={AddEditUser} />
-          <PrivateRoute exact path='/trainer' component={Trainer} />
           <PrivateRoute exact path='/attendance' component={Attendance} />
           <PrivateRoute exact path='/payment' component={Payment} />
           <PrivateRoute exact path={URLS.addCompany} component={AddCompany} />

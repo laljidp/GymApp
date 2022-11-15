@@ -7,31 +7,35 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import RootUserProvider from './context/RootUserContext'
 import { HashRouter } from 'react-router-dom'
+import { storageKeys } from './constants/UrlsConfig'
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
   cache: new InMemoryCache(),
   headers: {
-    authorization: `Bearer ${window.localStorage.getItem('Token')}`
+    authorization: `Bearer ${window.localStorage.getItem(storageKeys.token)}`
   },
   request: async operation => {
     operation.setContext({
       headers: {
-        authorization: `Bearer ${window.localStorage.getItem('Token')}`
+        authorization: `Bearer ${window.localStorage.getItem(storageKeys.token)}`
       }
     })
   },
   onError: (error) => {
-    const [err,] = error.graphQLErrors
-    if (err && (err?.message?.toLowerCase()?.includes('invalid signature') ||
-      err?.message?.toLowerCase()?.includes('invalid token')
-    )
+    const [err,] = error?.graphQLErrors || []
+    if (
+      err && (err?.message?.toLowerCase()?.includes('invalid signature') ||
+        err?.message?.toLowerCase()?.includes('invalid token') ||
+        err?.message?.toLowerCase()?.includes('jwt expired')
+      )
     ) {
       console.log('Logout the user')
-      localStorage.removeItem('Token')
+      window.localStorage.removeItem(storageKeys.token)
+      window.localStorage.removeItem(storageKeys.isAuthenticated)
+      window.localStorage.removeItem(storageKeys.user)
       window.location.href = '/'
     }
-    console.log('error ', error.graphQLErrors)
   }
 })
 

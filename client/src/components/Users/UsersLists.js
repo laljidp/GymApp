@@ -9,6 +9,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { useHistory } from "react-router";
 import { URLS } from "../../constants/UrlsConfig";
+import { ROLES_TITLE } from "../../constants/rolesConfig";
 
 
 const UsersLists = (props) => {
@@ -38,7 +39,7 @@ const UsersLists = (props) => {
                       variant="body2"
                       color="text.primary"
                     >
-                      {user.phone_no || 'N/A'}
+                      {ROLES_TITLE[user?.role] || 'N/A'}
                     </Typography>
                   </React.Fragment>
                 }

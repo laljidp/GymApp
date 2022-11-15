@@ -1,7 +1,9 @@
 import mongoose from 'mongoose'
 import { COLLECTION } from './collections'
 
-export const GymCompany = mongoose.model(COLLECTION.GYM_COMPANY, {  
+const { Schema } = mongoose
+
+const GymSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -26,7 +28,7 @@ export const GymCompany = mongoose.model(COLLECTION.GYM_COMPANY, {
   logoUrl: {
     type: String
   },
-  smallLogoUrl :{
+  smallLogoUrl: {
     type: String
   },
   address: {
@@ -35,15 +37,9 @@ export const GymCompany = mongoose.model(COLLECTION.GYM_COMPANY, {
   regular_fees: {
     type: Number,
     required: true
-  },
-  createdAt: {
-    type: Date,
-    required: true,
-    default: Date.now()
-  },
-  updatedAt: {
-    type: Date,
-    required: true,
-    default: Date.now()
   }
-})
+},
+  { timestamps: true }
+)
+
+export const GymCompany = mongoose.model(COLLECTION.GYM_COMPANY, GymSchema)
